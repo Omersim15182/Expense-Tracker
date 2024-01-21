@@ -154,3 +154,10 @@ body {
     cursor: pointer;
     margin-top: 10px;
 }
+.btn:focus,
+.delete-btn:focus {
+  outline: 0;
+}
+.list li:hover .delete-btn {
+    opacity: 1;
+  }
