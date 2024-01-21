@@ -5,7 +5,13 @@ import TransactionList from './TransactionList';
 export default function AddNewTransaction() {
   const [addLabel, setAddLabel] = useState(0);
   const [amounts, setAmounts] = useState([]);
- 
+  const [texts, setTexts] = useState([]);
+
+  const handleTextChange = (e, index) => {
+    const updatedTexts = [...texts];
+    updatedTexts[index] = { text: e.target.value };
+    setTexts(updatedTexts);
+  };
 
   const handleAmountChange = (e, index) => {
     const updatedAmounts = [...amounts];
@@ -21,7 +27,10 @@ export default function AddNewTransaction() {
   return (
     <div className='AddNewTransaction'>
       {Array.from({ length: addLabel }).map((_, index) => (
-        <TransactionList key={index} showTitle={false} amount={amounts[index]?.amount || ''}  />
+        <TransactionList
+          key={index} showTitle={false} amount={amounts[index]?.amount || ''}
+          text={texts[index]?.text || ''}
+        />
       ))}
       <h3>Add new transaction</h3>
       <div className='Line-New-Transaction'></div>
@@ -29,14 +38,15 @@ export default function AddNewTransaction() {
         <div className="form-control">
           <label htmlFor="text">Text</label><br></br>
 
-          <input type="text" id="text" placeholder="Enter text..." />
+          <input type="text" id="text" value={texts[addLabel]?.text || ''}
+            onChange={(e) => handleTextChange(e, addLabel)} placeholder="Enter text..." />
 
         </div>
 
         <div className="form-control">
           <label htmlFor="amount">Amount <br />(negative - expense, positive - income)</label>
 
-          <input type="number" id="amount"  value={amounts[addLabel]?.amount || ''}
+          <input type="number" id="amount" value={amounts[addLabel]?.amount || ''}
             onChange={(e) => handleAmountChange(e, addLabel)} placeholder="Enter amount..." />
         </div>
         <button type="button" className="btn" onClick={handleAddLabel} >
