@@ -1,55 +1,67 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import TransactionList from './TransactionList';
 
 export default function AddNewTransaction() {
-  const [addLabel, setAddLabel] = useState(0);
-  const [amounts, setAmounts] = useState([]);
-  const [texts, setTexts] = useState([]);
+  const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
 
   const handleTextChange = (e, index) => {
-    const updatedTexts = [...texts];
-    updatedTexts[index] = { text: e.target.value };
-    setTexts(updatedTexts);
+    const updatedTransactions = [...transactions];
+    updatedTransactions[index] = {...updatedTransactions[index],text: e.target.value,};
+    setTransactions(updatedTransactions);
   };
 
   const handleAmountChange = (e, index) => {
-    const updatedAmounts = [...amounts];
-    updatedAmounts[index] = { amount: e.target.value };
-    setAmounts(updatedAmounts);
+    const updatedTransactions = [...transactions];
+    updatedTransactions[index] = {...updatedTransactions[index], amount: e.target.value,};
+    setTransactions(updatedTransactions);
   };
 
-  const handleAddLabel = () => {
-    setAddLabel(addLabel + 1);
-    setAmounts([...amounts, { amount: '' }]);
+  const handleButtonClick = () => {
+    const newTransaction = {
+      text: '',
+      amount: '',
+    };
+
+    setTransactions([...transactions, newTransaction]);
   };
+  console.log({transactions})
 
   return (
     <div className='AddNewTransaction'>
-      {Array.from({ length: addLabel }).map((_, index) => (
+      {transactions.map((transaction, index) => (
         <TransactionList
-          key={index} showTitle={false} amount={amounts[index]?.amount || ''}
-          text={texts[index]?.text || ''}
+          key={index}
+          showTitle={index ===0}
+          amount={transaction.amount}
+          text={transaction.text}
         />
       ))}
       <h3>Add new transaction</h3>
       <div className='Line-New-Transaction'></div>
-      <form id="form">
-        <div className="form-control">
-          <label htmlFor="text">Text</label><br></br>
-
-          <input type="text" id="text" value={texts[addLabel]?.text || ''}
-            onChange={(e) => handleTextChange(e, addLabel)} placeholder="Enter text..." />
-
+      <form id='form'>
+        <div className='form-control'>
+          <label htmlFor='text'>Text</label>
+          <br></br>
+          <input
+            type='text'
+            id='text'
+            value={transactions[transactions.length - 1]?.text || ''}
+            onChange={(e) => handleTextChange(e, transactions.length - 1)}
+            placeholder='Enter text...'
+          />
         </div>
 
-        <div className="form-control">
-          <label htmlFor="amount">Amount <br />(negative - expense, positive - income)</label>
-
-          <input type="number" id="amount" value={amounts[addLabel]?.amount || ''}
-            onChange={(e) => handleAmountChange(e, addLabel)} placeholder="Enter amount..." />
+        <div className='form-control'>
+          <label htmlFor='amount'>Amount (negative - expense, positive - income)</label>
+          <input
+            type='number'
+            id='amount'
+            value={transactions[transactions.length - 1]?.amount || ''}
+            onChange={(e) => handleAmountChange(e, transactions.length - 1)}
+            placeholder='Enter amount...'
+          />
         </div>
-        <button type="button" className="btn" onClick={handleAddLabel} >
+        <button type='button' className='btn' onClick={handleButtonClick}>
           Add transaction
         </button>
       </form>
