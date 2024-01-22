@@ -6,13 +6,20 @@ export default function AddNewTransaction() {
 
   const handleTextChange = (e, index) => {
     const updatedTransactions = [...transactions];
-    updatedTransactions[index] = {...updatedTransactions[index],text: e.target.value,};
+    updatedTransactions[index] = { ...updatedTransactions[index], text: e.target.value, };
     setTransactions(updatedTransactions);
   };
 
   const handleAmountChange = (e, index) => {
     const updatedTransactions = [...transactions];
-    updatedTransactions[index] = {...updatedTransactions[index], amount: e.target.value,};
+    updatedTransactions[index] = { ...updatedTransactions[index], amount: e.target.value, };
+    setTransactions(updatedTransactions);
+  };
+
+  const handleRemoveTransaction = (indexToRemove) => {
+    console.log('Removing transaction at index', indexToRemove)
+    const updatedTransactions = transactions.filter((_, index) => index !== indexToRemove);
+    console.log('Updated transactions:', updatedTransactions);
     setTransactions(updatedTransactions);
   };
 
@@ -24,16 +31,18 @@ export default function AddNewTransaction() {
 
     setTransactions([...transactions, newTransaction]);
   };
-  console.log({transactions})
+  console.log({ transactions })
 
   return (
-    <div className='AddNewTransaction'>
+    <div className='AddNewTransaction' showTitle={true}>
       {transactions.map((transaction, index) => (
         <TransactionList
-          key={index}
-          showTitle={index ===0}
+          transaction={transaction}
+          index={index}
+          showTitle={index === 0}
           amount={transaction.amount}
           text={transaction.text}
+          removeTrans={handleRemoveTransaction}
         />
       ))}
       <h3>Add new transaction</h3>
