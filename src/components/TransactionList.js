@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 export default function TransactionList({ index, showTitle = false, amount, text = null, removeTrans }) {
   console.log({ amount, text });
   const handleRemoveClick = () => {
@@ -7,8 +8,11 @@ export default function TransactionList({ index, showTitle = false, amount, text
     removeTrans(index);
   };
 
+
+
   return (
     <div>
+      
       {showTitle && <h3>History</h3>}
       {(text !== null) ? (
         <ul id="list" className={`list ${amount < 0 ? 'minus' : 'plus'}`}>
@@ -20,6 +24,7 @@ export default function TransactionList({ index, showTitle = false, amount, text
       ) : (
         null
       )}
+      
     </div>
   );
 }

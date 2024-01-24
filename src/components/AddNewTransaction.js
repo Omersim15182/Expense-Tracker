@@ -1,42 +1,44 @@
 import React, { useState } from 'react';
 import TransactionList from './TransactionList';
 
-export default function AddNewTransaction() {
+export default function AddNewTransaction({ updateTotalAmount }) {
   const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
 
   const handleTextChange = (e, index) => {
     const updatedTransactions = [...transactions];
-    updatedTransactions[index] = { ...updatedTransactions[index], text: e.target.value, };
+    updatedTransactions[index] = { ...updatedTransactions[index], text: e.target.value };
     setTransactions(updatedTransactions);
   };
 
   const handleAmountChange = (e, index) => {
     const updatedTransactions = [...transactions];
-    updatedTransactions[index] = { ...updatedTransactions[index], amount: e.target.value, };
+    updatedTransactions[index] = { ...updatedTransactions[index], amount: e.target.value };
     setTransactions(updatedTransactions);
   };
 
   const handleRemoveTransaction = (indexToRemove) => {
-    console.log('Removing transaction at index', indexToRemove)
     const updatedTransactions = transactions.filter((_, index) => index !== indexToRemove);
-    console.log('Updated transactions:', updatedTransactions);
     setTransactions(updatedTransactions);
   };
 
   const handleButtonClick = () => {
-    const newTransaction = {
-      text: '',
-      amount: '',
-    };
-
+    const newTransaction = { text: '', amount: '' };
     setTransactions([...transactions, newTransaction]);
   };
-  console.log({ transactions })
+
+  const calculateTotalAmount = () => {
+    const totalAmount = transactions.reduce((total, transaction) => total + parseFloat(transaction.amount || 0), 0);
+    return totalAmount.toFixed(2);
+  };
+
+  // Update total amount when transactions change
+  updateTotalAmount(calculateTotalAmount());
 
   return (
-    <div className='AddNewTransaction' showTitle={true}>
+    <div className="AddNewTransaction">
       {transactions.map((transaction, index) => (
         <TransactionList
+          key={index}
           transaction={transaction}
           index={index}
           showTitle={index === 0}
@@ -46,31 +48,31 @@ export default function AddNewTransaction() {
         />
       ))}
       <h3>Add new transaction</h3>
-      <div className='Line-New-Transaction'></div>
-      <form id='form'>
-        <div className='form-control'>
-          <label htmlFor='text'>Text</label>
-          <br></br>
+      <div className="Line-New-Transaction"></div>
+      <form id="form">
+        <div className="form-control">
+          <label htmlFor="text">Text</label>
+          <br />
           <input
-            type='text'
-            id='text'
+            type="text"
+            id="text"
             value={transactions[transactions.length - 1]?.text || ''}
             onChange={(e) => handleTextChange(e, transactions.length - 1)}
-            placeholder='Enter text...'
+            placeholder="Enter text..."
           />
         </div>
 
-        <div className='form-control'>
-          <label htmlFor='amount'>Amount (negative - expense, positive - income)</label>
+        <div className="form-control">
+          <label htmlFor="amount">Amount (negative - expense, positive - income)</label>
           <input
-            type='number'
-            id='amount'
+            type="number"
+            id="amount"
             value={transactions[transactions.length - 1]?.amount || ''}
             onChange={(e) => handleAmountChange(e, transactions.length - 1)}
-            placeholder='Enter amount...'
+            placeholder="Enter amount..."
           />
         </div>
-        <button type='button' className='btn' onClick={handleButtonClick}>
+        <button type="button" className="btn" onClick={handleButtonClick}>
           Add transaction
         </button>
       </form>
