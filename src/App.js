@@ -8,12 +8,20 @@ import AddNewTransaction from './components/AddNewTransaction';
 
 function App() {
   const [totalAmount, setTotalAmount] = useState(0);
+  const [totalExpensive, setTotalExpensive] = useState(0);
+  const [totalIncome, setTotalIncome] = useState(0);
 
-  // Function to update the totalAmount state
+
   const updateTotalAmount = (newTotalAmount) => {
     setTotalAmount(newTotalAmount);
   };
-console.log("appAmount:",totalAmount);
+  const updateTotalExpensive = (newTotalExpensive) => {
+    setTotalExpensive(newTotalExpensive);
+  };
+  const updateTotalIncome = (newTotalIncome) => {
+    setTotalIncome(newTotalIncome);
+  };
+
 
   return (
     <div className='App'>
@@ -21,10 +29,10 @@ console.log("appAmount:",totalAmount);
         <Header />
         {/* Pass totalAmount and updateTotalAmount to Balance */}
         <Balance totalAmount={totalAmount} />
-        <IncomeExpenseve />
+        <IncomeExpenseve totalExpensive={totalExpensive} totalIncome={totalIncome}/>
         <TransactionList />
         {/* Pass updateTotalAmount function to AddNewTransaction */}
-        <AddNewTransaction updateTotalAmount={updateTotalAmount} />
+        <AddNewTransaction updateTotalIncome={updateTotalIncome} updateTotalExpensive={updateTotalExpensive} updateTotalAmount={updateTotalAmount} />
       </div>
     </div>
   );

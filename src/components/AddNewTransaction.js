@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TransactionList from './TransactionList';
 
-export default function AddNewTransaction({ updateTotalAmount }) {
+export default function AddNewTransaction({ updateTotalIncome,updateTotalAmount, updateTotalExpensive }) {
   const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
 
   const handleTextChange = (e, index) => {
@@ -27,13 +27,28 @@ export default function AddNewTransaction({ updateTotalAmount }) {
   };
 
   const calculateTotalAmount = () => {
-    const totalAmount = transactions.reduce((total, transaction) => total + parseFloat(transaction.amount || 0), 0);
+    const totalAmount = transactions.reduce((total, transaction) =>
+      total + parseFloat(transaction.amount || 0), 0);
     return totalAmount.toFixed(2);
   };
 
+  const calculateTotalExpensive = () => {
+    const totalExpensive = transactions.reduce((total, { amount }) =>
+      parseFloat(amount || 0) < 0 ? total + parseFloat(amount) : total, 0).toFixed(2);
+    return totalExpensive;
+  };
+  const calculateTotalIncome = () => {
+    const totalIncome = transactions.reduce((total, { amount }) =>
+      parseFloat(amount || 0) > 0 ? total + parseFloat(amount) : total, 0).toFixed(2);
+    return totalIncome;
+  }
   // Update total amount when transactions change
-  updateTotalAmount(calculateTotalAmount());
-
+  useEffect(() => {
+    // Update total amount and total expensive when transactions change
+    updateTotalAmount(calculateTotalAmount());
+    updateTotalExpensive(calculateTotalExpensive());
+    updateTotalIncome(calculateTotalIncome());
+  }, [transactions, updateTotalAmount, updateTotalExpensive]);
   return (
     <div className="AddNewTransaction">
       {transactions.map((transaction, index) => (

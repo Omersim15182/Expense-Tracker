@@ -1,6 +1,6 @@
 import React from 'react';
 export default function Balance({totalAmount}) {
-  console.log("balanceAmount:",totalAmount)
+ 
   return ( 
     <div className='Balance'>
       <h4>Your Balance</h4>
