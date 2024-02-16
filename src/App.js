@@ -11,7 +11,7 @@ function App() {
   const [totalExpensive, setTotalExpensive] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
 
-
+  
   const updateTotalAmount = (newTotalAmount) => {
     setTotalAmount(newTotalAmount);
   };
@@ -29,7 +29,7 @@ function App() {
         <Header />
         {/* Pass totalAmount and updateTotalAmount to Balance */}
         <Balance totalAmount={totalAmount} />
-        <IncomeExpenseve totalExpensive={totalExpensive} totalIncome={totalIncome}/>
+        <IncomeExpenseve totalExpensive={totalExpensive} totalIncome={totalIncome} />
         <TransactionList />
         {/* Pass updateTotalAmount function to AddNewTransaction */}
         <AddNewTransaction updateTotalIncome={updateTotalIncome} updateTotalExpensive={updateTotalExpensive} updateTotalAmount={updateTotalAmount} />

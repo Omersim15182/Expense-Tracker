@@ -4,10 +4,9 @@ export default function Header() {
   
   return (
     <div>
-    <h2 className='Header'>
-      Expense Tracker
-    </h2>
-    
+      <h2 className='Header'>
+        Expense Tracker
+      </h2>
     </div>
   )
 }

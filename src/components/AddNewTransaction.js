@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import TransactionList from './TransactionList';
 
+
 export default function AddNewTransaction({ updateTotalIncome,updateTotalAmount, updateTotalExpensive }) {
   const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
-
+  
   const handleTextChange = (e, index) => {
     const updatedTransactions = [...transactions];
     updatedTransactions[index] = { ...updatedTransactions[index], text: e.target.value };
@@ -42,13 +43,12 @@ export default function AddNewTransaction({ updateTotalIncome,updateTotalAmount,
       parseFloat(amount || 0) > 0 ? total + parseFloat(amount) : total, 0).toFixed(2);
     return totalIncome;
   }
-  // Update total amount when transactions change
+  
   useEffect(() => {
-    // Update total amount and total expensive when transactions change
     updateTotalAmount(calculateTotalAmount());
     updateTotalExpensive(calculateTotalExpensive());
     updateTotalIncome(calculateTotalIncome());
-  }, [transactions, updateTotalAmount, updateTotalExpensive]);
+  }, [transactions, updateTotalAmount, updateTotalExpensive , updateTotalIncome]);
   return (
     <div className="AddNewTransaction">
       {transactions.map((transaction, index) => (
