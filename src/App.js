@@ -1,10 +1,11 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Balance from './components/Balance';
 import IncomeExpenseve from './components/IncomeExpenseve';
 import TransactionList from './components/TransactionList';
 import AddNewTransaction from './components/AddNewTransaction';
+
 
 function App() {
   const [totalAmount, setTotalAmount] = useState(0);
@@ -21,7 +22,9 @@ function App() {
   const updateTotalIncome = (newTotalIncome) => {
     setTotalIncome(newTotalIncome);
   };
+ 
 
+  
 
   return (
     <div className='App'>
