@@ -28,8 +28,8 @@ app.get('/showData', async (req, res) => {
 app.post('/createData', async (req, res) => {
   try {
     console.log(req.body);
-    const { text, amount, balance, income, expense } = req.body;
-    const createData = await db.query('INSERT INTO expenses (product, amount, balance, income, expense) VALUES ($1, $2, $3, $4, $5)', [text, amount, balance, income, expense]);
+    const { id,text, amount, balance, income, expense } = req.body;
+    const createData = await db.query('INSERT INTO expenses (id,product, amount, balance, income, expense) VALUES ($1, $2, $3, $4, $5,$6)', [id,text, amount, balance, income, expense]);
 
     res.status(200).send("Added successfully");
   } catch (err) {
@@ -40,8 +40,9 @@ app.post('/createData', async (req, res) => {
 
 app.delete('/deleteData', async (req, res) => {
   try {
-    // Perform the delete operation in the database
-    const deleteData = await db.query('DELETE FROM expenses WHERE id = 100');
+    const rowDelete=req.query.id;
+    console.log(`delete row : `,rowDelete);
+    const deleteData = await db.query('DELETE FROM expenses WHERE id = $1',[rowDelete]);
     // Send a success response to the client
     res.status(200).send("Delete successfully");
   } catch (err) {
@@ -50,8 +51,6 @@ app.delete('/deleteData', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-// app.delete('/delete/:id',()=>{});
-// app.put('/update',()=>{});
 
 
 

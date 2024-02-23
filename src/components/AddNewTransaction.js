@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import TransactionList from './TransactionList';
 import axios from 'axios';
+import SlideDown from 'react-slidedown';
+import 'react-slidedown/lib/slidedown.css';
+
+
+
 
 
 export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount, updateTotalExpensive }) {
   const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
 
-  let i=0
+ 
    
   const handleTextChange = (e, index) => {
     const updatedTransactions = [...transactions];
@@ -52,9 +57,9 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
     
     // Initialize newTransaction object with default values
     const newTransaction = {
-      
-      text: transactions[0].text,
-      amount: transactions[0].amount,
+      id: transactions.length-2,
+      text: transactions[transactions.length-2].text,
+      amount: transactions[transactions.length-2].amount,
       balance: calculateTotalAmount(),
       income: calculateTotalIncome(), // Pass the result of the function
       expense:calculateTotalExpensive(),
@@ -81,10 +86,11 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
     updateTotalIncome(calculateTotalIncome());
   }, [transactions, updateTotalAmount, updateTotalExpensive, updateTotalIncome]);
 
- 
+ console.log(`length`,transactions.length-2);
+ console.log(transactions);
 
   return (
-    <div className="AddNewTransaction">
+    <div className="AddNewTransaction"  ><SlideDown >
       {transactions.map((transaction, index) => (
         <TransactionList
           key={index}
@@ -94,8 +100,10 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
           amount={transaction.amount}
           text={transaction.text}
           removeTrans={handleRemoveTransaction}
+          indexForDelete={transactions.length-2}
+
         />
-      ))}
+      ))}</SlideDown>
       <h3>Add new transaction</h3>
       <div className="Line-New-Transaction"></div>
       <form id="form" onSubmit={handleSubmit} >
