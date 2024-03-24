@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react';
 import TransactionList from './TransactionList';
 import axios from 'axios';
 import SlideDown from 'react-slidedown';
-import 'react-slidedown/lib/slidedown.css';
-
-
-
-
+import { v4 as uuidv4 } from 'uuid';
+const uniqueId = uuidv4();
+console.log(uniqueId);
 
 export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount, updateTotalExpensive }) {
   const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
 
- 
-   
   const handleTextChange = (e, index) => {
     const updatedTransactions = [...transactions];
     updatedTransactions[index] = { ...updatedTransactions[index], text: e.target.value };
@@ -57,7 +53,7 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
     
     // Initialize newTransaction object with default values
     const newTransaction = {
-      id: transactions.length-2,
+      id: uniqueId,
       text: transactions[transactions.length-2].text,
       amount: transactions[transactions.length-2].amount,
       balance: calculateTotalAmount(),
@@ -90,7 +86,7 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
  console.log(transactions);
 
   return (
-    <div className="AddNewTransaction"  ><SlideDown >
+    <div className="AddNewTransaction"  ><SlideDown style={{padding:'15px 20px', maxHeight: '90px', overflowY: 'auto' }} >
       {transactions.map((transaction, index) => (
         <TransactionList
           key={index}
