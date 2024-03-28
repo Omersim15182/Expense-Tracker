@@ -4,12 +4,12 @@ import React from 'react';
 export default function TransactionList({ index, showTitle = false, amount, text = null, removeTrans, indexForDelete }) {
 
   const handleRemoveClick = () => {
-    console.log('Clicked remove button for index:', index);
+    console.log('Clicked remove button for index:',indexForDelete );
     removeTrans(index);
 
-    axios.delete(`http://localhost:4000/deleteData?id=${index}`)
+    axios.delete(`http://localhost:4000/deleteData`, { data: { id: indexForDelete } })
       .then(res => {
-        console.log(`data`, res.data);
+        console.log(`data`, res);
       })
       .catch(Error => {
         console.log(`error`, Error);

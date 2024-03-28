@@ -40,13 +40,14 @@ app.post('/createData', async (req, res) => {
 
 app.delete('/deleteData', async (req, res) => {
   try {
-    const rowDelete=req.query.id;
-    console.log(`delete row : `,rowDelete);
-    const deleteData = await db.query('DELETE FROM expenses WHERE id = $1',[rowDelete]);
-    // Send a success response to the client
+    const { id } = req.body;
+    
+    console.log(`delete row : `,id);
+    const deleteData = await db.query('DELETE FROM expenses WHERE id = $1', [id]);
+   
     res.status(200).send("Delete successfully");
   } catch (err) {
-    // If an error occurs, log the error and send an error response to the client
+   
     console.error(err);
     res.status(500).send('Internal Server Error');
   }

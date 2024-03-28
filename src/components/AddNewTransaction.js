@@ -3,11 +3,11 @@ import TransactionList from './TransactionList';
 import axios from 'axios';
 import SlideDown from 'react-slidedown';
 import { v4 as uuidv4 } from 'uuid';
-const uniqueId = uuidv4();
-console.log(uniqueId);
+
+
 
 export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount, updateTotalExpensive }) {
-  const [transactions, setTransactions] = useState([{ text: '', amount: '' }]);
+  const [transactions, setTransactions] = useState([{ text: '', amount: '', uuid: uuidv4() }]);
 
   const handleTextChange = (e, index) => {
     const updatedTransactions = [...transactions];
@@ -27,7 +27,7 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
   };
 
   const handleButtonClick = () => {
-    const newTransaction = { text: '', amount: '' };
+    const newTransaction = { text: '', amount: '', uuid: uuidv4() };
     setTransactions([...transactions, newTransaction]);
   };
 
@@ -47,34 +47,30 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
       parseFloat(amount || 0) > 0 ? total + parseFloat(amount) : total, 0).toFixed(2);
     return totalIncome;
   };
-  
+
   const handleSubmit = event => {
     event.preventDefault();
-    
-    // Initialize newTransaction object with default values
+
     const newTransaction = {
-      id: uniqueId,
-      text: transactions[transactions.length-2].text,
-      amount: transactions[transactions.length-2].amount,
+      id: transactions[transactions.length - 2].uuid,
+      text: transactions[transactions.length - 2].text,
+      amount: transactions[transactions.length - 2].amount,
       balance: calculateTotalAmount(),
-      income: calculateTotalIncome(), // Pass the result of the function
-      expense:calculateTotalExpensive(),
+      income: calculateTotalIncome(),
+      expense: calculateTotalExpensive(),
     };
-   
-  
-    // Modify newTransaction object as needed
-    
-    
+
+
+
     axios.post(`http://localhost:4000/createData`, newTransaction)
       .then(res => {
-        console.log(res);
         console.log(res.data);
       })
       .catch(error => {
         console.error('Error:', error);
       });
   }
-    
+
 
   useEffect(() => {
     updateTotalAmount(calculateTotalAmount());
@@ -82,11 +78,11 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
     updateTotalIncome(calculateTotalIncome());
   }, [transactions, updateTotalAmount, updateTotalExpensive, updateTotalIncome]);
 
- console.log(`length`,transactions.length-2);
- console.log(transactions);
+  console.log(`length`, transactions.length - 2);
+  console.log(transactions);
 
   return (
-    <div className="AddNewTransaction"  ><SlideDown style={{padding:'15px 20px', maxHeight: '90px', overflowY: 'auto' }} >
+    <div className="AddNewTransaction"  ><SlideDown style={{ padding: '15px 20px', maxHeight: '90px', overflowY: 'auto' }} >
       {transactions.map((transaction, index) => (
         <TransactionList
           key={index}
@@ -96,7 +92,7 @@ export default function AddNewTransaction({ updateTotalIncome, updateTotalAmount
           amount={transaction.amount}
           text={transaction.text}
           removeTrans={handleRemoveTransaction}
-          indexForDelete={transactions.length-2}
+          indexForDelete={transaction.uuid}
 
         />
       ))}</SlideDown>
